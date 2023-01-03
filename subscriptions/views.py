@@ -11,7 +11,25 @@ from .models import StripeCustomer
 
 @login_required
 def home(request):
+  try:
+    # Retrieve the subscription and product
+    stripe_customer = StripeCustomer.objects.get(user=request.user)
+    stripe_api_key = settings.STRIPE_SECRET_KEY
+    subscription = stripe.Subscription.retrieve(stripe_customer.stripeSubscriptionId, api_key=stripe_api_key)
+    product = stripe.Product.retrieve(subscription.plan.product, api_key=stripe_api_key)
+
+
+    # Feel free to fetch any additional data from 'subscription' or 'product'
+    # https://stripe.com/docs/api/subscriptions/object
+    # https://stripe.com/docs/api/products/object
+
+    return render(request, 'home.html', {
+      'subscription': subscription,
+      'product': product,
+    })
+  except StripeCustomer.DoesNotExist:
     return render(request, 'home.html', {})
+
 
 @login_required
 def success(request):
@@ -86,3 +104,4 @@ def stripe_webhook(request):
     )
     print(user.username + ' just subscribed.')
   return HttpResponse(status=200)
+
