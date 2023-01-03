@@ -27,7 +27,28 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'subscriptions.apps.SubscriptionsConfig',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# We have to set this variable, because we enabled 'django.contrib.sites'
+SITE_ID = 1
+
+# User will be redirected to this page after logging in
+LOGIN_REDIRECT_URL = '/'
+
+# If you don't have an email server running yet add this line to avoid any possible errors.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -113,3 +134,10 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Stripe settings
+STRIPE_PUBLISHABLE_KEY = 'pk_test_51MM52LLTlpQPZKOhd5hKfALkDPTNGqMVSXEt9MZe8A3E69bKAtjztiuvQ8m51R44zPoPv2KsbjJ0mvhFRXrJxThG007zt71ojL'
+STRIPE_SECRET_KEY = 'sk_test_51MM52LLTlpQPZKOhpEwq0VAKk4LQEqinines7eMHg4j41N91NKivAOw4Vxig8eTIdYPv29L354C0FIDOky4t3TXT00sOEmbFPn'
+STRIPE_PRICE_ID = 'price_1MM5AVLTlpQPZKOhezAsCN2s'
+
+# Email settings
